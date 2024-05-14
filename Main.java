@@ -60,18 +60,21 @@ class console {
 
 
     public void readData() {
-        Map<String, List<String>> wordNumbersMap = new HashMap<>();
+        Map<String, List<String>> wordNumbersMap = new HashMap<>();[]
     
         try {
             BufferedReader reader = new BufferedReader(new FileReader("words.txt"));
             String lines;
             while ((lines = reader.readLine()) != null) {
-                String[] wordArray = lines.split("!");
-                    for(String words : wordArray){
-                        String[] wordsSplit = words.split("[{}:]");
-                            for(String newWord : wordsSplit){
-                                System.out.println(newWord);
-                            }
+                //Hämtar grupperna
+                String[] groupArray = lines.split("!");
+
+                    for(String words : groupArray){
+                        String[] wordArray = words.split("[{}]");
+                        String[] valueArray = words.split("[:]");
+                        for(String a : wordArray){
+                            System.out.println(a);
+                        }
                     }
             }
             reader.close();
