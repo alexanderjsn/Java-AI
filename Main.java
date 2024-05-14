@@ -60,7 +60,7 @@ class console {
 
 
     public void readData() {
-        Map<String, List<String>> wordNumbersMap = new HashMap<>();[]
+        Map<String, List<String>> wordNumbersMap = new HashMap<>();
     
         try {
             BufferedReader reader = new BufferedReader(new FileReader("words.txt"));
@@ -75,6 +75,10 @@ class console {
                         for(String a : wordArray){
                             System.out.println(a);
                         }
+                        for(String b : valueArray){
+                            System.out.println(b);
+                        }
+                        
                     }
             }
             reader.close();
