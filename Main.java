@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,51 +59,26 @@ class console {
     }
 
 
-   
-
-
-    public void readData(){
-
-            Map<String,String> wordNumbersMap = new HashMap<>();
+    public void readData() {
+        Map<String, List<String>> wordNumbersMap = new HashMap<>();
     
-
-            try {
-                // läser in wordtx - konvert till strings
-                BufferedReader reader = new BufferedReader(new FileReader("words.txt"));
-                // håller lines så vi kan split + sätta in i array
-                // DATA: !{ Hello}:48::14::16::20::83::57::80::0::70::83:!
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // fyller en array med allt innehåll innanför {} och ::
-                    String[] parts = line.split("\\{|\\}:|::|:");
-                // DATA: !Hello 48 14 16 20 83 57 80 0 70 83!
-
-
-
-                    // om längden på array är med än 1 iterera genom array och skapa en part för varje objekt
-                    if (parts.length > 1) {
-                        for (int i = 0; i<parts.length; i++) {
-                            String part = parts[i];                    
-    
-                    // om part innehåller ! splitta och sätt in i array
-                        String[] groupSplit = part.split("!");
-                        // DATA: Hello 48 14 16 20 83 57 80 0 70 83
-                        
-                        // om längden på array är mer än 1 iterera genom array och sätt in i map
-                        for (String group : groupSplit) {
-                            // sätter in i en array
-                            wordNumbersMap.put(group,part);
-                        }       
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("words.txt"));
+            String lines;
+            while ((lines = reader.readLine()) != null) {
+                String[] wordArray = lines.split("!");
+                    for(String words : wordArray){
+                        String[] wordsSplit = words.split("[{}:]");
+                            for(String newWord : wordsSplit){
+                                System.out.println(newWord);
+                            }
                     }
-                    }
-                }
-                reader.close();
-             } catch (Exception e) {
-                e.printStackTrace();
             }
-           
-} 
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 class reader {
     public reader() {
