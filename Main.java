@@ -4,6 +4,10 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -35,11 +39,11 @@ class console {
                     randomNumber = (int) (Math.random() * 100);
                     randomNumbers.add(randomNumber);
                 }
-                writer.write("{ " + word + "}");
+                writer.write("!{ " + word + "}");
                 for (Integer num : randomNumbers) {
                     writer.write(":" + num + ":");
                 }
-                writer.write("\n");
+                writer.write("!\n");
             }
             writer.close();
         } catch (IOException e) {
@@ -47,44 +51,58 @@ class console {
         }
     }
 
+   
+
     private String[] splitWords(String input) {
         return input.split(" ");
     }
+
 
    
 
 
     public void readData(){
 
+            Map<String,String> wordNumbersMap = new HashMap<>();
+    
+
             try {
+                // läser in wordtx - konvert till strings
                 BufferedReader reader = new BufferedReader(new FileReader("words.txt"));
+                // håller lines så vi kan split + sätta in i array
+                // DATA: !{ Hello}:48::14::16::20::83::57::80::0::70::83:!
+
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
+                    // fyller en array med allt innehåll innanför {} och ::
+                    String[] parts = line.split("\\{|\\}:|::|:");
+                // DATA: !Hello 48 14 16 20 83 57 80 0 70 83!
+
+
+
+                    // om längden på array är med än 1 iterera genom array och skapa en part för varje objekt
+                    if (parts.length > 1) {
+                        for (int i = 0; i<parts.length; i++) {
+                            String part = parts[i];                    
+    
+                    // om part innehåller ! splitta och sätt in i array
+                        String[] groupSplit = part.split("!");
+                        // DATA: Hello 48 14 16 20 83 57 80 0 70 83
+                        
+                        // om längden på array är mer än 1 iterera genom array och sätt in i map
+                        for (String group : groupSplit) {
+                            // sätter in i en array
+                            wordNumbersMap.put(group,part);
+                        }       
+                    }
+                    }
                 }
                 reader.close();
-            } catch (Exception e) {
+             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String inputExample = "{Data: }::1::::2::::3::::4::::5::::6::::7::::8::::9::::10::\n";
-            Pattern pattern = Pattern.compile("\\{([^}]*)\\}(::(\\d+)::)+");
-            Matcher matcher = pattern.matcher(inputExample);
-            if (matcher.find()) {
-                // Group 1: First capturing group (inside the curly braces)
-                String textInsideBraces = matcher.group(1);
-                System.out.println("Text inside braces: " + textInsideBraces);
-    
-                // Use a nested matcher to find all the numbers
-                Pattern numberPattern = Pattern.compile("::(\\d+)::");
-                Matcher numberMatcher = numberPattern.matcher(inputExample);
-    
-                System.out.println("Numbers:");
-                while (numberMatcher.find()) {
-                    String number = numberMatcher.group(1);
-                    System.out.println(number);
-                }
-    }
-}
+           
+} 
 
 class reader {
     public reader() {
@@ -113,4 +131,5 @@ class wordData {
 
 
     }
+}
 }
