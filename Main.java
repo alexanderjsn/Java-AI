@@ -58,30 +58,46 @@ class console {
         return input.split(" ");
     }
 
-
     public void readData() {
         Map<String, List<String>> wordNumbersMap = new HashMap<>();
-    
+
         try {
             BufferedReader reader = new BufferedReader(new FileReader("words.txt"));
-            String lines;
-            while ((lines = reader.readLine()) != null) {
-                String[] brSplit = lines.split("\\}:");                    
-                for(String word : brSplit){
-                        String[] keys = word.split("\\{");
-                        String[] values = keys[1].split(":");
-                        List<String> valueList = new ArrayList<>();
-                            for (int i = 1; i < values.length; i++) {
-                                valueList.add(values[i]);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Split each line by "!:"
+                String[] groups = line.split("!");
+                
+                for (String group : groups) {
+                    if (!group.trim().isEmpty()) {
+                        // Remove the starting '{' and split by '}'
+                        group = group.substring(1);
+                        String[] parts = group.split("\\}");
+
+                        if (parts.length == 2) {
+                            String key = parts[0].trim();
+                            String[] values = parts[1].split(":");
+
+                            List<String> valueList = new ArrayList<>();
+                            for (String value : values) {
+                                if (!value.trim().isEmpty()) {
+                                    valueList.add(value.trim());
+                                }
                             }
-                        wordNumbersMap.put(keys[0], valueList);
+                            wordNumbersMap.put(key, valueList);
                         }
+                    }
+                }
+            }
             reader.close();
-        }} catch (Exception e) {
+            
+            for (Map.Entry<String, List<String>> entry : wordNumbersMap.entrySet()) {
+                System.out.println("Key: " + entry.getKey() + ", Values: " + entry.getValue());
+            }    
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-}
 
 class reader {
     public reader() {
@@ -110,4 +126,5 @@ class wordData {
 
 
     }
+}
 }
