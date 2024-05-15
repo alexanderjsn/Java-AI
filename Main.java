@@ -44,7 +44,7 @@ class console {
                 for (Integer num : randomNumbers) {
                     writer.write(":" + num + ":");
                 }
-                writer.write("!\n");
+                writer.write("\n");
             }
             writer.close();
         } catch (IOException e) {
@@ -66,20 +66,14 @@ class console {
             BufferedReader reader = new BufferedReader(new FileReader("words.txt"));
             String lines;
             while ((lines = reader.readLine()) != null) {
-                //Hämtar grupperna
-                String[] groupArray = lines.split("!");
-
-                    for(String words : groupArray){
-                        String[] wordArray = words.split("[{}]");
-                        String[] valueArray = words.split("[:]");
-                        for(String a : wordArray){
-                            System.out.println(a);
-                        }
-                        for(String b : valueArray){
-                            System.out.println(b);
-                        }
-                        
+                String[] brSplit = lines.split("}:");
+                    for(String word : brSplit){
+                        String[] keys = word.split("{");
+                        String[] values = keys[1].split(":");
+                        List<String> valueList = new ArrayList<>();
+                        wordNumbersMap.put(keys[0], valueList);
                     }
+                
             }
             reader.close();
         } catch (Exception e) {
