@@ -66,20 +66,22 @@ class console {
             BufferedReader reader = new BufferedReader(new FileReader("words.txt"));
             String lines;
             while ((lines = reader.readLine()) != null) {
-                String[] brSplit = lines.split("}:");
-                    for(String word : brSplit){
-                        String[] keys = word.split("{");
+                String[] brSplit = lines.split("\\}:");                    
+                for(String word : brSplit){
+                        String[] keys = word.split("\\{");
                         String[] values = keys[1].split(":");
                         List<String> valueList = new ArrayList<>();
+                            for (int i = 1; i < values.length; i++) {
+                                valueList.add(values[i]);
+                            }
                         wordNumbersMap.put(keys[0], valueList);
-                    }
-                
-            }
+                        }
             reader.close();
-        } catch (Exception e) {
+        }} catch (Exception e) {
             e.printStackTrace();
         }
     }
+}
 
 class reader {
     public reader() {
@@ -108,5 +110,4 @@ class wordData {
 
 
     }
-}
 }
